@@ -5,6 +5,7 @@
  */
 package com.iib.plugins;
 
+import com.iib.plugins.tools.Util;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -37,9 +38,9 @@ public class Binaries extends AbstractMojo {
          try {
             File f = outputDirectory;
             String artifact = project.getArtifactId();
-            String command = "mqsicreatebar -data ../ -compileOnly -skipWSErrorCheck";
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command).waitFor();
+            String command = String.format("mqsicreatebar -data ../ -p %s -compileOnly -skipWSErrorCheck -trace", artifact);
+            Util.executeCommand(command, getLog());
+            
              for (String extention : extentions) {
                  File artifactFile = new File(artifact+"."+extention);
                  if(artifactFile.exists()){

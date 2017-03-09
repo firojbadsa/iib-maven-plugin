@@ -6,12 +6,14 @@
 package com.iib.plugins;
 
 import com.iib.plugins.tools.FileTools;
+import com.iib.plugins.tools.Util;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.apache.maven.plugin.AbstractMojo;
@@ -42,15 +44,10 @@ public class LibZip extends AbstractMojo {
             
             File barFile = new File(relativePath + "/" + artifact + ".bar");
             File libzipFile = new File(relativePath + "/" + artifact + ".ziplib");
-            
-            String command = "mqsicreatebar -data ../ -b " + relativePath + "/" + artifact + ".bar" + " -l " + artifact;
-            
-            
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command).waitFor();
-            getLog().info("EXEC done");
+            String command = String.format("mqsicreatebar -data ../ -b %1$s/%2$s.bar -l %2$s -skipWSErrorCheck -trace -deployAsSource",relativePath, artifact);
+            getLog().info(command);
+            Util.executeCommand(command, getLog());
             getLog().info(barFile.getAbsolutePath());
-            getLog().info(barFile.exists()+"");
             if (barFile.exists()) {
                 FileInputStream fis = new FileInputStream(barFile);
                 ZipInputStream zin = new ZipInputStream(new BufferedInputStream(fis));
@@ -70,7 +67,10 @@ public class LibZip extends AbstractMojo {
                     }
                 }
                 this.project.getArtifact().setFile(libzipFile);
-            }else getLog().error("Could not create bar file ["+command+"]");
+            }else{
+                getLog().error("Could not create bar file ["+command+"]");
+                 throw new MojoExecutionException("could not create the libzip");
+            }
         } catch (IOException ex) {
             getLog().error(ex);
         } catch (InterruptedException ex) {

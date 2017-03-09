@@ -15,6 +15,7 @@ package com.iib.plugins;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import com.iib.plugins.tools.Util;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
@@ -43,9 +44,8 @@ public class Bar extends AbstractMojo {
         try {
             File f = outputDirectory;
             String artifact = project.getArtifactId();
-            String command = "mqsicreatebar -data ../ -b "+f.getCanonicalPath()+"/"+artifact+".bar -a "+artifact;
-            Runtime runtime = Runtime.getRuntime();
-            runtime.exec(command).waitFor();
+            String command = String.format("mqsicreatebar -data ../ -b %1$s/%2$s.bar -a %2$s -skipWSErrorCheck -trace",f.getCanonicalPath(), artifact);
+            Util.executeCommand(command, getLog());
         } catch (IOException ex) {
             Logger.getLogger(Bar.class.getName()).log(Level.SEVERE, null, ex);
             throw new MojoExecutionException("Error execution Runtime", ex);
