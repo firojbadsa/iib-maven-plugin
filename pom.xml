@@ -18,6 +18,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.ibm.broker.config</groupId>
+            <artifactId>IntegrationAPI</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
             <version>2.0</version>

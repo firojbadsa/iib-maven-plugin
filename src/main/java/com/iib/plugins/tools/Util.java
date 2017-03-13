@@ -6,11 +6,18 @@
 package com.iib.plugins.tools;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.apache.maven.plugin.logging.Log;
 
 /**
@@ -57,5 +64,63 @@ public class Util {
         Util.print(p.getErrorStream(), log, Level.SEVERE);
         p.waitFor();
     }
+
+    private static String generateZipEntry(String root, String file) {
+        return file.substring(root.length() + 1, file.length());
+    }
+
+    public static List<String> generateFileList(String root, File node) {
+        ArrayList<String> fileList = new ArrayList<String>();
+        if (node.isFile()) {
+            fileList.add(generateZipEntry(root, node.getAbsoluteFile().toString()));
+        }
+
+        if (node.isDirectory()) {
+            String[] subNote = node.list();
+            for (String filename : subNote) {
+                fileList.addAll(generateFileList(root, new File(node, filename)));
+            }
+        }
+        return fileList;
+
+    }
+
+    public static File ZipDir(File toZip, String dest, Log log) {
+        byte[] buffer = new byte[1024];
+
+        try {
+            File zipFile = new File(dest);
+            FileOutputStream fos = new FileOutputStream(dest);
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            log.info("Output to bar : " + zipFile);
+            List<String> fileList = generateFileList(toZip.getAbsolutePath(), toZip);
+            for (String file : fileList) {
+
+                log.info("File Added : " + file);
+                ZipEntry ze = new ZipEntry(file);
+                zos.putNextEntry(ze);
+
+                FileInputStream in = new FileInputStream(toZip.getAbsolutePath() + File.separator + file);
+
+                int len;
+                while ((len = in.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+
+                in.close();
+            }
+
+            zos.closeEntry();
+            zos.close();
+            
+            log.info("Done");
+            return zipFile;
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+        }
+        return null;
+    }
+     
 
 }
