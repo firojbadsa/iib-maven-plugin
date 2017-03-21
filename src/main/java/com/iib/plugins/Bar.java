@@ -44,8 +44,11 @@ public class Bar extends AbstractMojo {
         try {
             File f = outputDirectory;
             String artifact = project.getArtifactId();
+            String filePath = String.format("%1$s/%2$s.bar", f.getCanonicalPath(), artifact);
             String command = String.format("mqsicreatebar -data ../ -b %1$s/%2$s.bar -a %2$s -skipWSErrorCheck -trace",f.getCanonicalPath(), artifact);
             Util.executeCommand(command, getLog());
+            project.getArtifact().setFile(new File(filePath));
+            
         } catch (IOException ex) {
             Logger.getLogger(Bar.class.getName()).log(Level.SEVERE, null, ex);
             throw new MojoExecutionException("Error execution Runtime", ex);

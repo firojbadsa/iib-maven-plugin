@@ -17,12 +17,7 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.ibm.broker.config</groupId>
-            <artifactId>IntegrationAPI</artifactId>
-            <version>1.0</version>
-            <type>jar</type>
-        </dependency>
+        
         <dependency>
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-plugin-api</artifactId>
@@ -51,6 +46,19 @@
             <version>2.2.1</version>
             <type>jar</type>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>3.0.4</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.twdata.maven</groupId>
+            <artifactId>mojo-executor</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        
+
     </dependencies>
 
     <build>
@@ -118,18 +126,7 @@
             </build>
         </profile>
     </profiles>
-    <repositories>
-        <repository>
-            <id>michelin-local</id>
-            <url>http://mialx116.mia.michelin.com:8080/nexus/content/groups/public/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>michelin-local</id>
-            <url>http://mialx116.mia.michelin.com:8080/nexus/content/groups/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+    
     
     
 </project>

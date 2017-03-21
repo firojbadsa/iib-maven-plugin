@@ -5,8 +5,8 @@
  */
 package com.iib.plugins;
 
-import com.ibm.broker.MessageBrokerAPIException;
-import com.ibm.broker.config.appdev.FlowRendererBAR;
+//import com.ibm.broker.MessageBrokerAPIException;
+//import com.ibm.broker.config.appdev.FlowRendererBAR;
 import com.iib.plugins.tools.Util;
 import edu.emory.mathcs.backport.java.util.Arrays;
 import java.io.File;
@@ -27,7 +27,7 @@ import org.apache.maven.project.MavenProject;
  *
  * @author fx13293
  */
-@Mojo(name = "bar")
+@Mojo(name = "bar-native")
 public class PackageBar extends AbstractMojo {
 
     
@@ -42,15 +42,15 @@ public class PackageBar extends AbstractMojo {
         //FlowRendererBAR.write(root, ArrayList<String> source, DirName, fileName, FlowRendererBAR.CREATE_MODE, true);
     }
     public static void main(String[] args) {
-        try {
+    	/*try {
             ArrayList<String> files = (ArrayList<String>) Util.generateFileList("C:\\Users\\fx13293\\IBM\\IIBT10\\workspace\\Demo\\MyAppication", new File("C:\\Users\\fx13293\\IBM\\IIBT10\\workspace\\Demo\\MyAppication"));
             
-            FlowRendererBAR.write("C:\\Users\\fx13293\\IBM\\IIBT10\\workspace\\Demo\\", files, "MyApplication", "test.bar", FlowRendererBAR.CREATE_MODE, true);
+            //FlowRendererBAR.write("C:\\Users\\fx13293\\IBM\\IIBT10\\workspace\\Demo\\", files, "MyApplication", "test.bar", FlowRendererBAR.CREATE_MODE, true);
         } catch (IOException ex) {
             Logger.getLogger(PackageBar.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MessageBrokerAPIException ex) {
             Logger.getLogger(PackageBar.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }
     
 }

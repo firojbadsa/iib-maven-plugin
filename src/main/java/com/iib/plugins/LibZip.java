@@ -44,7 +44,7 @@ public class LibZip extends AbstractMojo {
             
             File barFile = new File(relativePath + "/" + artifact + ".bar");
             File libzipFile = new File(relativePath + "/" + artifact + ".ziplib");
-            String command = String.format("mqsicreatebar -data ../ -b %1$s/%2$s.bar -l %2$s -skipWSErrorCheck -trace -deployAsSource",relativePath, artifact);
+            String command = String.format("mqsicreatebar -data ../ -b %1$s%3$s%2$s.bar -l %2$s -skipWSErrorCheck -trace -deployAsSource",relativePath, artifact, File.separator);
             getLog().info(command);
             Util.executeCommand(command, getLog());
             getLog().info(barFile.getAbsolutePath());
