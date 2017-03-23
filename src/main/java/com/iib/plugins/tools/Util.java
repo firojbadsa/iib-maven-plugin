@@ -86,6 +86,10 @@ public class Util {
     }
 
     public static File ZipDir(File toZip, String dest, Log log) {
+        return ZipDir(toZip, dest, null, log);
+    }
+
+    public static File ZipDir(File toZip, String dest, String filtre, Log log) {
         byte[] buffer = new byte[1024];
 
         try {
@@ -96,24 +100,24 @@ public class Util {
             log.info("Output to bar : " + zipFile);
             List<String> fileList = generateFileList(toZip.getAbsolutePath(), toZip);
             for (String file : fileList) {
+                if ((filtre == null || !file.startsWith(filtre)) && !file.startsWith("target") ) {
+                    log.info("File Added : " + file);
+                    ZipEntry ze = new ZipEntry(file);
+                    zos.putNextEntry(ze);
 
-                log.info("File Added : " + file);
-                ZipEntry ze = new ZipEntry(file);
-                zos.putNextEntry(ze);
+                    FileInputStream in = new FileInputStream(toZip.getAbsolutePath() + File.separator + file);
 
-                FileInputStream in = new FileInputStream(toZip.getAbsolutePath() + File.separator + file);
+                    int len;
+                    while ((len = in.read(buffer)) > 0) {
+                        zos.write(buffer, 0, len);
+                    }
 
-                int len;
-                while ((len = in.read(buffer)) > 0) {
-                    zos.write(buffer, 0, len);
+                    in.close();
                 }
-
-                in.close();
             }
-
             zos.closeEntry();
             zos.close();
-            
+
             log.info("Done");
             return zipFile;
         } catch (IOException ex) {
@@ -121,6 +125,5 @@ public class Util {
         }
         return null;
     }
-     
 
 }
