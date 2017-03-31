@@ -37,7 +37,7 @@ public class ZipBar extends AbstractMojo {
         try {
             String artifact = project.getArtifactId();
             String current = new File(".").getCanonicalPath();
-            String relativePath = FileTools.getRelativePath(this.outputDirectory, current);
+            String relativePaths = FileTools.getRelativePath(this.outputDirectory, current);
             File temp =  File.createTempFile("temp", ".bar");
             File zipFile = Util.ZipDir(new File(current), temp.getAbsolutePath(), getLog());
             new File(outputDirectory).mkdirs();

@@ -18,6 +18,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.twdata.maven</groupId>
+            <artifactId>mojo-executor</artifactId>
+            <version>2.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.ibm.broker.config</groupId>
             <artifactId>IntegrationAPI</artifactId>
             <version>1.0</version>
@@ -49,6 +54,12 @@
             <groupId>org.apache.maven</groupId>
             <artifactId>maven-project</artifactId>
             <version>2.2.1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>3.1.0</version>
             <type>jar</type>
         </dependency>
     </dependencies>

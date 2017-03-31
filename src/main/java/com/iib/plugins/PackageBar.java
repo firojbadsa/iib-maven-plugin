@@ -27,7 +27,7 @@ import org.apache.maven.project.MavenProject;
  *
  * @author fx13293
  */
-@Mojo(name = "bar")
+@Mojo(name = "pbar")
 public class PackageBar extends AbstractMojo {
 
     
