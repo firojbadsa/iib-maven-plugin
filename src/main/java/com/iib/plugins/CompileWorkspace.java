@@ -24,7 +24,7 @@ import org.apache.maven.project.MavenProject;
  * @author fx13293
  */
 @Mojo(name = "compile")
-public class Compile  extends AbstractMojo {
+public class CompileWorkspace  extends AbstractMojo {
 
     @Parameter(property = "project.build.directory", readonly = true)
     private String outputDirectory;
@@ -38,9 +38,9 @@ public class Compile  extends AbstractMojo {
             String command = String.format("mqsicreatebar -data %s -compileOnly -trace", relativePath);
             Util.executeCommand(command, getLog());
         } catch (IOException ex) {
-            Logger.getLogger(Compile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CompileWorkspace.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(Compile.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CompileWorkspace.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }
