@@ -24,8 +24,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 
-@Mojo(name = "libbar")
-public class ZipBar extends AbstractMojo {
+@Mojo(name = "iib-artifact")
+public class ZipProject extends AbstractMojo {
 
     @Parameter(property = "project.build.directory", readonly = true)
     private String outputDirectory;
@@ -37,15 +37,10 @@ public class ZipBar extends AbstractMojo {
         try {
             String artifact = project.getArtifactId();
             String current = new File(".").getCanonicalPath();
-            String relativePaths = FileTools.getRelativePath(this.outputDirectory, current);
-            File temp =  File.createTempFile("temp", ".bar");
-            File zipFile = Util.ZipDir(new File(current), temp.getAbsolutePath(), getLog());
             new File(outputDirectory).mkdirs();
-            Path org = FileSystems.getDefault().getPath(temp.getAbsolutePath());
-            String destFile = String.format("%1$s/%2$s.bar",outputDirectory, artifact );
-            Path dest = FileSystems.getDefault().getPath(destFile);
-            Files.copy(org, dest, StandardCopyOption.REPLACE_EXISTING);
-            project.getArtifact().setFile(new File(destFile));
+            File destFile = new File(outputDirectory, String.format("%1$s.zip",artifact ));
+            File zipFile = Util.ZipDir(new File(current), destFile.getAbsolutePath(), getLog());
+            project.getArtifact().setFile(zipFile);
         } catch (IOException ex) {
             getLog().error(ex);
         }

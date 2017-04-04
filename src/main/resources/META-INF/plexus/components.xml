@@ -13,11 +13,8 @@
                         <id>default</id>
                         <phases>
                             <process-resources>
-                                com.iib.plugins:iib-maven-plugin:dependencies
+                                com.iib.plugins:iib-maven-plugin:process-resources
                             </process-resources>
-                            <compile>
-                                org.apache.maven.plugins:maven-compiler-plugin:compile
-                            </compile>
                             <package>
                                 com.iib.plugins:iib-maven-plugin:bar
                             </package>
@@ -45,10 +42,10 @@
                 <addedToClasspath>false</addedToClasspath>
             </configuration>
         </component>
-        
-         <component>
+         
+        <component>
             <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-            <role-hint>libzip</role-hint>
+            <role-hint>iib-artifact</role-hint>
             <implementation>
                 org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
             </implementation>
@@ -57,14 +54,11 @@
                     <lifecycle>
                         <id>default</id>
                         <phases>
-                            <process-resources>
-                                org.apache.maven.plugins:maven-resources-plugin:resources
-                            </process-resources>
                             <compile>
                                 org.apache.maven.plugins:maven-compiler-plugin:compile
                             </compile>
                             <package>
-                                com.iib.plugins:iib-maven-plugin:libzip
+                                com.iib.plugins:iib-maven-plugin:iib-artifact
                             </package>
                             <install>
                                 org.apache.maven.plugins:maven-install-plugin:install
@@ -79,106 +73,16 @@
         </component>
         <component>
             <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-            <role-hint>bar</role-hint>
+            <role-hint>iib-artifact</role-hint>
             <implementation>      
                 org.apache.maven.artifact.handler.DefaultArtifactHandler
             </implementation>
             <configuration>
-                <type>libzip</type>
-                <extension>bar</extension>
+                <type>iib-artifact</type>
+                <extension>zip</extension>
                 <language>java</language>
                 <addedToClasspath>false</addedToClasspath>
             </configuration>
-        </component>
-        
-         <component>
-            <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-            <role-hint>iib-bin</role-hint>
-            <implementation>
-                org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
-            </implementation>
-            <configuration>
-                <lifecycles>
-                    <lifecycle>
-                        <id>default</id>
-                        <phases>
-                            <process-resources>
-                                org.apache.maven.plugins:maven-resources-plugin:resources
-                            </process-resources>
-                            <compile>
-                                org.apache.maven.plugins:maven-compiler-plugin:compile
-                            </compile>
-                            <package>
-                                com.iib.plugins:iib-maven-plugin:iib-bin
-                            </package>
-                            <install>
-                                org.apache.maven.plugins:maven-install-plugin:install
-                            </install>
-                            <deploy>
-                                org.apache.maven.plugins:maven-deploy-plugin:deploy
-                            </deploy>
-                        </phases>
-                    </lifecycle>
-                </lifecycles>
-            </configuration>
-        </component>
-        <component>
-            <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-            <role-hint>iib-bin</role-hint>
-            <implementation>      
-                org.apache.maven.artifact.handler.DefaultArtifactHandler
-            </implementation>
-            <configuration>
-                <type>iib-bin</type>
-                <language>java</language>
-                <addedToClasspath>false</addedToClasspath>
-            </configuration>
-        </component>
-        
-         <component>
-            <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
-            <role-hint>libbar</role-hint>
-            <implementation>
-                org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
-            </implementation>
-            <configuration>
-                <lifecycles>
-                    <lifecycle>
-                        <id>default</id>
-                        <phases>
-                            <process-resources>
-                                com.iib.plugins:iib-maven-plugin:dependencies
-                            </process-resources>
-                            <compile>
-                                org.apache.maven.plugins:maven-compiler-plugin:compile
-                            </compile>
-                            <package>
-                                com.iib.plugins:iib-maven-plugin:libbar
-                            </package>
-                            <install>
-                                org.apache.maven.plugins:maven-install-plugin:install
-                            </install>
-                            <deploy>
-                                org.apache.maven.plugins:maven-deploy-plugin:deploy
-                            </deploy>
-                        </phases>
-                    </lifecycle>
-                </lifecycles>
-            </configuration>
-        </component>
-        <component>
-            <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
-            <role-hint>bar</role-hint>
-            <implementation>      
-                org.apache.maven.artifact.handler.DefaultArtifactHandler
-            </implementation>
-            <configuration>
-                <type>libzip</type>
-                <extension>bar</extension>
-                <language>java</language>
-                <addedToClasspath>false</addedToClasspath>
-            </configuration>
-        </component>
-        
+        </component>       
     </components>
 </component-set>
