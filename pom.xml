@@ -69,10 +69,6 @@
             <artifactId>websocket-common</artifactId>
             <version>9.0.0.v20130308</version>
         </dependency>
-        
-        
-        
-        
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
@@ -102,8 +98,41 @@
             <version>3.1.0</version>
             <type>jar</type>
         </dependency>
-        
-        
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>allclient</artifactId>
+            <version>8.0.6</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>traceControl</artifactId>
+            <version>8.0.6</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>fscontext</artifactId>
+            <version>8.0.6</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>jms</artifactId>
+            <version>8.0.6</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.mq</groupId>
+            <artifactId>providerutil</artifactId>
+            <version>8.0.6</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.antlr</groupId>
+            <artifactId>antlr4-runtime</artifactId>
+            <version>4.6</version>
+        </dependency>
     </dependencies>
 
     <build>
