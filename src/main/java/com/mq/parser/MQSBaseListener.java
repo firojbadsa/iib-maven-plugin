@@ -64,6 +64,18 @@ public class MQSBaseListener implements MQSListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterEmptyProperty(MQSParser.EmptyPropertyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEmptyProperty(MQSParser.EmptyPropertyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSTRING(MQSParser.STRINGContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -28,11 +28,17 @@ public class MQSCToPCF {
 
     private static MQSCToPCF instance;
     private Properties pcfcommands;
+    private Properties types;
+    private Properties options;
 
     private MQSCToPCF() {
         try {
             pcfcommands = new Properties();
+            types =  new Properties();
+            options =  new Properties();
             pcfcommands.load(new FileInputStream("pcfcommands.properties"));
+            types.load(new FileInputStream("types.properties"));
+            options.load(new FileInputStream("options.properties"));
         } catch (IOException ex) {
             Logger.getLogger(MQSCToPCF.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -48,21 +54,36 @@ public class MQSCToPCF {
     public Integer getCommand(String command) {
         return (Integer) MQConstants.getValue(pcfcommands.getProperty(command));
     }
+    
+    public Object getOptionFor(String key) {
+        String result = options.getProperty(key);
+        if(result!= null){
+            //[YES,MQFC_YES]
+            return MQConstants.getValue(getPropValue(result));
+        }
+        return null;
+    }
+    private String getPropValue(String v){
+        return v.substring(v.indexOf(",")+1, v.lastIndexOf("]"));
+    }
+    
+    public String getType(String key) {
+        return types.getProperty(key);
+    }
+    public Integer getOptionFor(String key, String s) {
+        String v = options.getProperty(key);
+        if(v != null){
+            String val = v.substring(v.indexOf(s)).substring(v.substring(v.indexOf(s)).indexOf(",")+1, v.substring(v.indexOf(s)).indexOf("]") );
+            
+            return getCommand(val);
+        }
+        return null;
+    }
+    
+   
 
     /*
     
-    private PCFMessage createMessageCreateQueue(String queue, int type, String comment, boolean tx) {
-        PCFMessage message = new PCFMessage(MQConstants.MQCMD_CREATE_Q);
-        message.addParameter(MQConstants.MQCA_Q_NAME, queue);
-        message.addParameter(MQConstants.MQIA_Q_TYPE, type);
-
-        if (tx) {
-            message.addParameter(MQConstants.MQIA_USAGE, MQConstants.MQUS_TRANSMISSION);
-        }
-        message.addParameter(MQConstants.MQCA_Q_DESC, comment);
-        return message;
-    }
-
     public PCFMessage[] createTopic(String topicName, String topic_cluster, String topicString) throws MQDataException, PCFException, IOException {
         PCFMessage pcfCmd = new PCFMessage(MQConstants.MQCMD_CREATE_TOPIC);
         pcfCmd.addParameter(MQConstants.MQCA_TOPIC_NAME, topicName);
@@ -95,13 +116,7 @@ public class MQSCToPCF {
         return agent.send(message);
     }
 
-    public void deleteQueue(String queue) throws IOException, MQDataException {
-        PCFMessage pcfCmd = new PCFMessage(MQConstants.MQCMD_DELETE_Q);
-        pcfCmd.addParameter(MQConstants.MQCA_Q_NAME, queue);
-        pcfCmd.addParameter(MQConstants.MQIACF_PURGE, MQConstants.MQPO_YES);
-
-        null;
-    }
+    
 
     public PCFMessage[] createReceiverChannel(String name, String comments) throws MQDataException, PCFException, IOException {
         PCFMessage pcfCmd = createChannel(name, MQConstants.MQCHT_RECEIVER, comments);
@@ -147,4 +162,12 @@ public class MQSCToPCF {
         return pcfCmd;
     }
      */
+
+    
+
+    
+
+    
+
+    
 }

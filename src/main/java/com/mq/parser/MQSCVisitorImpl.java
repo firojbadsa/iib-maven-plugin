@@ -5,23 +5,28 @@
  */
 package com.mq.parser;
 
+import com.ibm.mq.MQEnvironment;
+import com.ibm.mq.MQException;
+import com.ibm.mq.MQQueueManager;
 import com.ibm.mq.constants.MQConstants;
-import com.mq.commands.MQSCToPCF;
+import com.ibm.mq.headers.MQDataException;
+import com.ibm.mq.headers.pcf.PCFMessage;
+import com.ibm.mq.headers.pcf.PCFMessageAgent;
 import com.mq.parser.MQSParser.ObjectDefinitionContext;
 import com.mq.parser.MQSParser.PropertyContext;
 import com.mq.commands.MQSCommand;
-import java.io.FileInputStream;
+import com.mq.parser.MQSParser.EmptyPropertyContext;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.atn.PredictionMode;
 import org.antlr.v4.runtime.tree.ParseTree;
-import org.antlr.v4.runtime.tree.TerminalNode;
 
 /**
  *
@@ -33,35 +38,45 @@ public class MQSCVisitorImpl extends MQSBaseVisitor<List<MQSCommand>> {
 
     }
 
-    public static void main(String[] args) throws FileNotFoundException, IOException {
+    public static void main(String[] args) throws FileNotFoundException, IOException, MQException, MQDataException {
 
-        ANTLRInputStream input = new ANTLRInputStream("DEFINE QLOCAL(IIB.WMB_LTEST_MQREPLY)\n"
-                + "DEFINE QALIAS(IIB.WMB_ATEST_MQREPLY) TARGET(IIB.WMB_LTEST_MQREPLY) DESCR('Queue Alias for Replay Test') \n"
-                + "DEFINE QLOCAL(IIB.WMB_ATEST_MQ)\n"
-                + "DEFINE QALIAS(IIB.WMB_LTEST_MQ) TARGET(IIB.WMB_ATEST_MQ) DESCR('Queue Alias for MQ Test')\n");
+        ANTLRInputStream input = new ANTLRInputStream("DEFINE TOPIC(JUAN) TOPICSTR(MY/STRING/TOPIC) CLUSTER(TOPIC_CLUSTER)\n");
         MQSLexer lexer = new MQSLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MQSParser parser = new MQSParser(tokens);
         parser.getInterpreter().setPredictionMode(PredictionMode.LL);
-        //parser.getInterpreter().setPredictionMode(PredictionMode.LL_EXACT_AMBIG_DETECTION);
 
         ParseTree tree = parser.objectCommand();
         MQSCVisitorImpl p = new MQSCVisitorImpl();
-        
+
+        MQEnvironment.hostname = "10.216.67.169";
+        MQEnvironment.port = 1414;
+        MQEnvironment.channel = "MIGRATION";
+        MQQueueManager qm = new MQQueueManager("CMPLL40");
+        PCFMessageAgent agent = new PCFMessageAgent(qm);
+
         List<MQSCommand> result = p.visit(tree);
         for (MQSCommand mQSCommand : result) {
-            System.out.println(mQSCommand);
-            Object obj = MQSCToPCF.getInstance().getCommand(mQSCommand.getCommand()+mQSCommand.getType());
-            System.out.println(obj);
-            System.out.println(obj.getClass().getName());
+            try {
+                
+                PCFMessage o = mQSCommand.getPCFMessage();
+                PCFMessage[] response = agent.send(o);
+                System.out.println(mQSCommand);
+                for (PCFMessage pCFMessage : response) {
+                    System.out.println(pCFMessage);
+                }
+            } catch (MQDataException ex) {
+                Logger.getLogger(MQSCVisitorImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(MQSCVisitorImpl.class.getName()).log(Level.SEVERE, MQConstants.lookupReasonCode(ex.getReason()));
+            }
+
         }
+
     }
-    private static int i = 0;
 
     @Override
     public List<MQSCommand> visitObjectCommand(MQSParser.ObjectCommandContext ctx) {
         List<ObjectDefinitionContext> objectdef = ctx.objectDefinition();
-
         ArrayList<MQSCommand> commands = new ArrayList<MQSCommand>();
         for (ObjectDefinitionContext objectDefinitionContext : objectdef) {
             String action = objectDefinitionContext.objectDefinitionHeader().getStart().getText();
@@ -69,19 +84,30 @@ public class MQSCVisitorImpl extends MQSBaseVisitor<List<MQSCommand>> {
             String name = objectDefinitionContext.objectDefinitionHeader().value().getText();
             MQSCommand command = new MQSCommand(action, type, name);
             List<PropertyContext> properties = objectDefinitionContext.property();
-            command.setProperties(parseToHashMap(properties));
+            List<EmptyPropertyContext> eproperties = objectDefinitionContext.emptyProperty();
+            command.addAllProperties(parseToHashMap(properties));
+            command.addAllProperties(parseToHashMap(eproperties));
             commands.add(command);
         }
 
         return commands;
     }
 
-    private HashMap<String, String> parseToHashMap(List<PropertyContext> properties) {
+    private HashMap<String, String> parseToHashMap(List properties) {
         HashMap<String, String> props = new HashMap<String, String>();
-        for (PropertyContext property : properties) {
-            String keyProp = property.ID().getText();
-            String valueProp = property.value().getText();
+        for (Object oproperty : properties) {
+            String keyProp = null;
+            String valueProp = null;
+            if (oproperty instanceof PropertyContext) {
+                PropertyContext property = ((PropertyContext) oproperty);
+                keyProp = property.ID().getText();
+                valueProp = (property.value() == null) ? "" : property.value().getText();
+            } else {
+                EmptyPropertyContext property = ((EmptyPropertyContext) oproperty);
+                keyProp = property.ID().getText();
+            }
             props.put(keyProp, valueProp);
+
         }
         return props;
     }

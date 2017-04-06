@@ -48,6 +48,16 @@ public interface MQSListener extends ParseTreeListener {
 	 */
 	void exitProperty(MQSParser.PropertyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MQSParser#emptyProperty}.
+	 * @param ctx the parse tree
+	 */
+	void enterEmptyProperty(MQSParser.EmptyPropertyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MQSParser#emptyProperty}.
+	 * @param ctx the parse tree
+	 */
+	void exitEmptyProperty(MQSParser.EmptyPropertyContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code STRING}
 	 * labeled alternative in {@link MQSParser#value}.
 	 * @param ctx the parse tree

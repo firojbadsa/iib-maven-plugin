@@ -45,6 +45,13 @@ public class MQSBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements MQ
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
+	@Override public T visitEmptyProperty(MQSParser.EmptyPropertyContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
 	@Override public T visitSTRING(MQSParser.STRINGContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}

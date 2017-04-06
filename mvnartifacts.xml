@@ -1,0 +1,5 @@
+mvn install:install-file -Dfile=com.ibm.mq.allclient.jar -DgroupId=com.ibm.mq -DartifactId=allclient -Dversion=8.0.6 -Dpackaging=jar
+mvn install:install-file -Dfile=com.ibm.mq.traceControl.jar -DgroupId=com.ibm.mq -DartifactId=traceControl -Dversion=8.0.6 -Dpackaging=jar
+mvn install:install-file -Dfile=fscontext.jar -DgroupId=com.ibm.mq -DartifactId=fscontext -Dversion=8.0.6 -Dpackaging=jar
+mvn install:install-file -Dfile=jms.jar -DgroupId=com.ibm.mq -DartifactId=jms -Dversion=8.0.6 -Dpackaging=jar
+mvn install:install-file -Dfile=providerutil.jar -DgroupId=com.ibm.mq -DartifactId=providerutil -Dversion=8.0.6 -Dpackaging=jar

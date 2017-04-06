@@ -17,23 +17,24 @@ public class MQSParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, ID=5, NUMBER=6, PUNCTUATION=7, WORD_VERSION=8, 
-		SERVER_IP=9, VAL_TIME_1=10, VAL_TIME_2=11, VAL_DATE=12, STRING=13, WS=14, 
-		NEWLINE=15;
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, ID=6, NUMBER=7, PUNCTUATION=8, 
+		WORD_VERSION=9, SERVER_IP=10, VAL_TIME_1=11, VAL_TIME_2=12, VAL_DATE=13, 
+		STRING=14, TOPICSTRING=15, WS=16, NEWLINE=17;
 	public static final int
 		RULE_objectCommand = 0, RULE_objectDefinition = 1, RULE_objectDefinitionHeader = 2, 
-		RULE_property = 3, RULE_value = 4;
+		RULE_property = 3, RULE_emptyProperty = 4, RULE_value = 5;
 	public static final String[] ruleNames = {
 		"objectCommand", "objectDefinition", "objectDefinitionHeader", "property", 
-		"value"
+		"emptyProperty", "value"
 	};
 
 	private static final String[] _LITERAL_NAMES = {
-		null, "'DEFINE'", "'ALTER'", "'('", "')'"
+		null, "'DEFINE'", "'ALTER'", "'DELETE'", "'('", "')'"
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
-		null, null, null, null, null, "ID", "NUMBER", "PUNCTUATION", "WORD_VERSION", 
-		"SERVER_IP", "VAL_TIME_1", "VAL_TIME_2", "VAL_DATE", "STRING", "WS", "NEWLINE"
+		null, null, null, null, null, null, "ID", "NUMBER", "PUNCTUATION", "WORD_VERSION", 
+		"SERVER_IP", "VAL_TIME_1", "VAL_TIME_2", "VAL_DATE", "STRING", "TOPICSTRING", 
+		"WS", "NEWLINE"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -121,19 +122,19 @@ public class MQSParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(15);
+			setState(17);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__0 || _la==T__1) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2))) != 0)) {
 				{
 				{
-				setState(10);
+				setState(12);
 				objectDefinition();
-				setState(11);
+				setState(13);
 				match(NEWLINE);
 				}
 				}
-				setState(17);
+				setState(19);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -159,6 +160,12 @@ public class MQSParser extends Parser {
 		}
 		public PropertyContext property(int i) {
 			return getRuleContext(PropertyContext.class,i);
+		}
+		public List<EmptyPropertyContext> emptyProperty() {
+			return getRuleContexts(EmptyPropertyContext.class);
+		}
+		public EmptyPropertyContext emptyProperty(int i) {
+			return getRuleContext(EmptyPropertyContext.class,i);
 		}
 		public ObjectDefinitionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -186,19 +193,31 @@ public class MQSParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(18);
+			setState(20);
 			objectDefinitionHeader();
-			setState(22);
+			setState(25);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==ID) {
 				{
-				{
-				setState(19);
-				property();
+				setState(23);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,1,_ctx) ) {
+				case 1:
+					{
+					setState(21);
+					property();
+					}
+					break;
+				case 2:
+					{
+					setState(22);
+					emptyProperty();
+					}
+					break;
 				}
 				}
-				setState(24);
+				setState(27);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -246,9 +265,9 @@ public class MQSParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(25);
+			setState(28);
 			_la = _input.LA(1);
-			if ( !(_la==T__0 || _la==T__1) ) {
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__1) | (1L << T__2))) != 0)) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -256,14 +275,14 @@ public class MQSParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(26);
-			match(ID);
-			setState(27);
-			match(T__2);
-			setState(28);
-			value();
 			setState(29);
+			match(ID);
+			setState(30);
 			match(T__3);
+			setState(31);
+			value();
+			setState(32);
+			match(T__4);
 			}
 		}
 		catch (RecognitionException re) {
@@ -307,14 +326,56 @@ public class MQSParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(31);
-			match(ID);
-			setState(32);
-			match(T__2);
-			setState(33);
-			value();
 			setState(34);
+			match(ID);
+			setState(35);
 			match(T__3);
+			setState(36);
+			value();
+			setState(37);
+			match(T__4);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class EmptyPropertyContext extends ParserRuleContext {
+		public TerminalNode ID() { return getToken(MQSParser.ID, 0); }
+		public EmptyPropertyContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_emptyProperty; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof MQSListener ) ((MQSListener)listener).enterEmptyProperty(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof MQSListener ) ((MQSListener)listener).exitEmptyProperty(this);
+		}
+		@Override
+		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
+			if ( visitor instanceof MQSVisitor ) return ((MQSVisitor<? extends T>)visitor).visitEmptyProperty(this);
+			else return visitor.visitChildren(this);
+		}
+	}
+
+	public final EmptyPropertyContext emptyProperty() throws RecognitionException {
+		EmptyPropertyContext _localctx = new EmptyPropertyContext(_ctx, getState());
+		enterRule(_localctx, 8, RULE_emptyProperty);
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(39);
+			match(ID);
 			}
 		}
 		catch (RecognitionException re) {
@@ -444,16 +505,16 @@ public class MQSParser extends Parser {
 
 	public final ValueContext value() throws RecognitionException {
 		ValueContext _localctx = new ValueContext(_ctx, getState());
-		enterRule(_localctx, 8, RULE_value);
+		enterRule(_localctx, 10, RULE_value);
 		try {
-			setState(42);
+			setState(47);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case STRING:
 				_localctx = new STRINGContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(36);
+				setState(41);
 				match(STRING);
 				}
 				break;
@@ -461,7 +522,7 @@ public class MQSParser extends Parser {
 				_localctx = new NUMBERContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(37);
+				setState(42);
 				match(NUMBER);
 				}
 				break;
@@ -469,7 +530,7 @@ public class MQSParser extends Parser {
 				_localctx = new IDContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(38);
+				setState(43);
 				match(ID);
 				}
 				break;
@@ -477,7 +538,7 @@ public class MQSParser extends Parser {
 				_localctx = new TIME1Context(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(39);
+				setState(44);
 				match(VAL_TIME_1);
 				}
 				break;
@@ -485,7 +546,7 @@ public class MQSParser extends Parser {
 				_localctx = new TIME2Context(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(40);
+				setState(45);
 				match(VAL_TIME_2);
 				}
 				break;
@@ -493,7 +554,7 @@ public class MQSParser extends Parser {
 				_localctx = new DATEContext(_localctx);
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(41);
+				setState(46);
 				match(VAL_DATE);
 				}
 				break;
@@ -513,19 +574,20 @@ public class MQSParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\21/\4\2\t\2\4\3\t"+
-		"\3\4\4\t\4\4\5\t\5\4\6\t\6\3\2\3\2\3\2\7\2\20\n\2\f\2\16\2\23\13\2\3\3"+
-		"\3\3\7\3\27\n\3\f\3\16\3\32\13\3\3\4\3\4\3\4\3\4\3\4\3\4\3\5\3\5\3\5\3"+
-		"\5\3\5\3\6\3\6\3\6\3\6\3\6\3\6\5\6-\n\6\3\6\2\2\7\2\4\6\b\n\2\3\3\2\3"+
-		"\4\60\2\21\3\2\2\2\4\24\3\2\2\2\6\33\3\2\2\2\b!\3\2\2\2\n,\3\2\2\2\f\r"+
-		"\5\4\3\2\r\16\7\21\2\2\16\20\3\2\2\2\17\f\3\2\2\2\20\23\3\2\2\2\21\17"+
-		"\3\2\2\2\21\22\3\2\2\2\22\3\3\2\2\2\23\21\3\2\2\2\24\30\5\6\4\2\25\27"+
-		"\5\b\5\2\26\25\3\2\2\2\27\32\3\2\2\2\30\26\3\2\2\2\30\31\3\2\2\2\31\5"+
-		"\3\2\2\2\32\30\3\2\2\2\33\34\t\2\2\2\34\35\7\7\2\2\35\36\7\5\2\2\36\37"+
-		"\5\n\6\2\37 \7\6\2\2 \7\3\2\2\2!\"\7\7\2\2\"#\7\5\2\2#$\5\n\6\2$%\7\6"+
-		"\2\2%\t\3\2\2\2&-\7\17\2\2\'-\7\b\2\2(-\7\7\2\2)-\7\f\2\2*-\7\r\2\2+-"+
-		"\7\16\2\2,&\3\2\2\2,\'\3\2\2\2,(\3\2\2\2,)\3\2\2\2,*\3\2\2\2,+\3\2\2\2"+
-		"-\13\3\2\2\2\5\21\30,";
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23\64\4\2\t\2\4\3"+
+		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\2\7\2\22\n\2\f\2\16\2\25"+
+		"\13\2\3\3\3\3\3\3\7\3\32\n\3\f\3\16\3\35\13\3\3\4\3\4\3\4\3\4\3\4\3\4"+
+		"\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\5\7\62\n\7\3\7\2"+
+		"\2\b\2\4\6\b\n\f\2\3\3\2\3\5\65\2\23\3\2\2\2\4\26\3\2\2\2\6\36\3\2\2\2"+
+		"\b$\3\2\2\2\n)\3\2\2\2\f\61\3\2\2\2\16\17\5\4\3\2\17\20\7\23\2\2\20\22"+
+		"\3\2\2\2\21\16\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2\23\24\3\2\2\2\24\3"+
+		"\3\2\2\2\25\23\3\2\2\2\26\33\5\6\4\2\27\32\5\b\5\2\30\32\5\n\6\2\31\27"+
+		"\3\2\2\2\31\30\3\2\2\2\32\35\3\2\2\2\33\31\3\2\2\2\33\34\3\2\2\2\34\5"+
+		"\3\2\2\2\35\33\3\2\2\2\36\37\t\2\2\2\37 \7\b\2\2 !\7\6\2\2!\"\5\f\7\2"+
+		"\"#\7\7\2\2#\7\3\2\2\2$%\7\b\2\2%&\7\6\2\2&\'\5\f\7\2\'(\7\7\2\2(\t\3"+
+		"\2\2\2)*\7\b\2\2*\13\3\2\2\2+\62\7\20\2\2,\62\7\t\2\2-\62\7\b\2\2.\62"+
+		"\7\r\2\2/\62\7\16\2\2\60\62\7\17\2\2\61+\3\2\2\2\61,\3\2\2\2\61-\3\2\2"+
+		"\2\61.\3\2\2\2\61/\3\2\2\2\61\60\3\2\2\2\62\r\3\2\2\2\6\23\31\33\61";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -5,6 +5,7 @@
  */
 package com.mq.commands;
 
+import com.ibm.mq.constants.MQConstants;
 import com.ibm.mq.headers.pcf.PCFMessage;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +31,11 @@ public class MQSCommand {
         this.command = command;
         this.name = name;
         this.type = type;
+        this.properties = new HashMap<String, String>();
+    }
+
+    public void addAllProperties(HashMap<String, String> parseToHashMap) {
+        properties.putAll(parseToHashMap);
     }
 
     public String getType() {
@@ -66,7 +72,7 @@ public class MQSCommand {
 
     @Override
     public String toString() {
-        return "MQSCommand{" + "command=" + command + ", name=" + name + ", type=" + type + '}';
+        return "MQSCommand{" + "command=" + command + ", type=" + type + ", name=" + name + '}';
     }
 
     public int getCommandInt() {
@@ -79,15 +85,51 @@ public class MQSCommand {
         for (Map.Entry<String, String> entry : properties.entrySet()) {
             String key = entry.getKey();
             String value = entry.getValue();
-            int command =  getCommandInt(key);
+            int cmd = MQSCToPCF.getInstance().getCommand(key);
+            String type = MQSCToPCF.getInstance().getType(key);
+            if (type != null) {
+                /* THE PROPERTY DOES NOT EXIST OR IS NO IN THE CATALOG*/
+                Integer action = MQSCToPCF.getInstance().getCommand(key);
+                switch (type.charAt(0)) {
+                    case 'A':
+                        Object option = MQSCToPCF.getInstance().getOptionFor(key);
+                        props.put(action, option);
+                        break;
+                    case 'I':
+                        props.put(action, new Integer(value));
+                        break;
+                    case 'S':
+                        props.put(action, value);
+                        break;
+                    case 'O':
+                        Object toption = MQSCToPCF.getInstance().getOptionFor(key, value);
+                        props.put(action, toption);
+                        break;
+                }
+            }
 
         }
         return props;
     }
 
+    /*
+    message.addParameter(MQConstants.MQCA_Q_NAME, queue);
+        message.addParameter(MQConstants.MQIA_Q_TYPE, type);
+    
+    pcfCmd.addParameter(MQConstants.MQCA_TOPIC_NAME, topicName);
+        pcfCmd.addParameter(MQConstants.MQCA_TOPIC_STRING, topicString);
+     */
     public PCFMessage getPCFMessage() {
 
-        PCFMessage message = new PCFMessage(getCommandInt());
+        int cmd = getCommandInt();
+        PCFMessage message = new PCFMessage(cmd);
+        Integer objectName = MQSCToPCF.getInstance().getCommand(type.charAt(0) + "NAME");
+        message.addParameter(objectName, name);
+        if (type.charAt(0) == 'Q') {
+            Integer objectkeyType = MQSCToPCF.getInstance().getCommand(type.charAt(0) + "TYPE");
+            Integer objectType = MQSCToPCF.getInstance().getCommand(type);
+            message.addParameter(objectkeyType, objectType);
+        }
         HashMap<Integer, Object> parameters = getPCFProperties();
         for (Map.Entry<Integer, Object> entry : parameters.entrySet()) {
             Integer key = entry.getKey();
@@ -99,6 +141,7 @@ public class MQSCommand {
             }
 
         }
+
         return message;
     }
 

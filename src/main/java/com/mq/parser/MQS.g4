@@ -15,6 +15,7 @@ VAL_TIME_1 : NUMBER '.' NUMBER '.' NUMBER ;
 VAL_TIME_2 : NUMBER ':' NUMBER ':' NUMBER ;
 VAL_DATE : NUMBER '-' NUMBER '-' NUMBER ;
 STRING : '\'' ('\\"'|.)*? '\'' ;
+TOPICSTRING: ([A-Z]/[A-Z])*?;
 	
 WS : [ \t]+ -> skip;        // whitespace
 NEWLINE: '\r'? '\n'  ;
@@ -22,11 +23,13 @@ NEWLINE: '\r'? '\n'  ;
 
 objectCommand : (objectDefinition NEWLINE)*;
 
-objectDefinition : objectDefinitionHeader  property* ;
+objectDefinition : objectDefinitionHeader  (property | emptyProperty)* ;
 
-objectDefinitionHeader : ('DEFINE'|'ALTER') ID '('value')'  ;
+objectDefinitionHeader : ('DEFINE'|'ALTER'|'DELETE') ID '('value')'  ;
 						
 property :  ID  '('value')';
+
+emptyProperty : ID;
 
 value : STRING #STRING
 	|NUMBER    #NUMBER

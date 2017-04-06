@@ -35,6 +35,12 @@ public interface MQSVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitProperty(MQSParser.PropertyContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link MQSParser#emptyProperty}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEmptyProperty(MQSParser.EmptyPropertyContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code STRING}
 	 * labeled alternative in {@link MQSParser#value}.
 	 * @param ctx the parse tree
