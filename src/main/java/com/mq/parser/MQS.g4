@@ -2,7 +2,7 @@
 grammar MQS;
 
 ID : LETTER (LETTER|DIGIT)*;
-fragment LETTER : [A-Za-z\u0080-\u00FF_\u002E\u2010\u2011\u002D] ; //
+fragment LETTER : [/A-Za-z\u0080-\u00FF_\u002E\u2010\u2011\u002D] ; //
 
 NUMBER : '-'? ('.' DIGIT+ | DIGIT+ ('.' DIGIT*)? ) ;
 fragment DIGIT : [0-9] ;
@@ -15,7 +15,7 @@ VAL_TIME_1 : NUMBER '.' NUMBER '.' NUMBER ;
 VAL_TIME_2 : NUMBER ':' NUMBER ':' NUMBER ;
 VAL_DATE : NUMBER '-' NUMBER '-' NUMBER ;
 STRING : '\'' ('\\"'|.)*? '\'' ;
-TOPICSTRING: ([A-Z]/[A-Z])*?;
+
 	
 WS : [ \t]+ -> skip;        // whitespace
 NEWLINE: '\r'? '\n'  ;

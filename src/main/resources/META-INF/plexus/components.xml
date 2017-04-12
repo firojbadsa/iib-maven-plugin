@@ -24,6 +24,7 @@
                             <deploy>
                                 org.apache.maven.plugins:maven-deploy-plugin:deploy
                             </deploy>
+                            
                         </phases>
                     </lifecycle>
                 </lifecycles>

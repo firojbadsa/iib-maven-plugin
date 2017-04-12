@@ -6,19 +6,12 @@
 package com.mq.commands;
 
 import com.ibm.mq.constants.MQConstants;
-import com.ibm.mq.headers.MQDataException;
-import com.ibm.mq.headers.pcf.PCFException;
-import com.ibm.mq.headers.pcf.PCFMessage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -34,11 +27,13 @@ public class MQSCToPCF {
     private MQSCToPCF() {
         try {
             pcfcommands = new Properties();
-            types =  new Properties();
-            options =  new Properties();
-            pcfcommands.load(new FileInputStream("pcfcommands.properties"));
-            types.load(new FileInputStream("types.properties"));
-            options.load(new FileInputStream("options.properties"));
+            types = new Properties();
+            options = new Properties();
+                     
+            pcfcommands.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("pcfcommands.properties"));
+            types.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("types.properties"));
+            options.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("options.properties"));
+
         } catch (IOException ex) {
             Logger.getLogger(MQSCToPCF.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -54,33 +49,33 @@ public class MQSCToPCF {
     public Integer getCommand(String command) {
         return (Integer) MQConstants.getValue(pcfcommands.getProperty(command));
     }
-    
+
     public Object getOptionFor(String key) {
         String result = options.getProperty(key);
-        if(result!= null){
+        if (result != null) {
             //[YES,MQFC_YES]
             return MQConstants.getValue(getPropValue(result));
         }
         return null;
     }
-    private String getPropValue(String v){
-        return v.substring(v.indexOf(",")+1, v.lastIndexOf("]"));
+
+    private String getPropValue(String v) {
+        return v.substring(v.indexOf(",") + 1, v.lastIndexOf("]"));
     }
-    
+
     public String getType(String key) {
         return types.getProperty(key);
     }
+
     public Integer getOptionFor(String key, String s) {
         String v = options.getProperty(key);
-        if(v != null){
-            String val = v.substring(v.indexOf(s)).substring(v.substring(v.indexOf(s)).indexOf(",")+1, v.substring(v.indexOf(s)).indexOf("]") );
-            
+        if (v != null) {
+            String val = v.substring(v.indexOf(s)).substring(v.substring(v.indexOf(s)).indexOf(",") + 1, v.substring(v.indexOf(s)).indexOf("]"));
+
             return getCommand(val);
         }
         return null;
     }
-    
-   
 
     /*
     
@@ -162,12 +157,4 @@ public class MQSCToPCF {
         return pcfCmd;
     }
      */
-
-    
-
-    
-
-    
-
-    
 }

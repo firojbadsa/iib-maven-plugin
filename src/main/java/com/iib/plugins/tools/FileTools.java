@@ -79,27 +79,35 @@ public class FileTools {
 
     public static void renameProjects(File outputDirectory, String iibartifact) {
         File[] folders = outputDirectory.listFiles();
-        for (File folder : folders) {
-            if (folder.getName().endsWith(iibartifact)) {
-                try {
-                    Files.move(folder.toPath(), folder.toPath().resolveSibling(folder.getName().replace(iibartifact, "")));
-                } catch (IOException ex) {
-                    Logger.getLogger(FileTools.class.getName()).log(Level.SEVERE, null, ex);
+        if (folders != null) {
+            for (File folder : folders) {
+                if (folder.getName().endsWith(iibartifact)) {
+                    try {
+                        Files.move(folder.toPath(), folder.toPath().resolveSibling(folder.getName().replace(iibartifact, "")));
+                    } catch (IOException ex) {
+                        Logger.getLogger(FileTools.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
-            }
 
+            }
         }
     }
 
     public static void deleteFolder(File file) {
         File[] entries = file.listFiles();
-        for (File s : entries) {
-            if(s.isDirectory()){
-                deleteFolder(s);
+        if (entries != null) {
+            for (File s : entries) {
+                if (s.isDirectory()) {
+                    deleteFolder(s);
+                }
+                s.delete();
             }
-            s.delete();
         }
         file.delete();
+    }
+
+    public static String readFile(File mqFile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

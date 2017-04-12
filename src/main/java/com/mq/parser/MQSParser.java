@@ -19,7 +19,7 @@ public class MQSParser extends Parser {
 	public static final int
 		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, ID=6, NUMBER=7, PUNCTUATION=8, 
 		WORD_VERSION=9, SERVER_IP=10, VAL_TIME_1=11, VAL_TIME_2=12, VAL_DATE=13, 
-		STRING=14, TOPICSTRING=15, WS=16, NEWLINE=17;
+		STRING=14, WS=15, NEWLINE=16;
 	public static final int
 		RULE_objectCommand = 0, RULE_objectDefinition = 1, RULE_objectDefinitionHeader = 2, 
 		RULE_property = 3, RULE_emptyProperty = 4, RULE_value = 5;
@@ -33,8 +33,7 @@ public class MQSParser extends Parser {
 	};
 	private static final String[] _SYMBOLIC_NAMES = {
 		null, null, null, null, null, null, "ID", "NUMBER", "PUNCTUATION", "WORD_VERSION", 
-		"SERVER_IP", "VAL_TIME_1", "VAL_TIME_2", "VAL_DATE", "STRING", "TOPICSTRING", 
-		"WS", "NEWLINE"
+		"SERVER_IP", "VAL_TIME_1", "VAL_TIME_2", "VAL_DATE", "STRING", "WS", "NEWLINE"
 	};
 	public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
@@ -574,12 +573,12 @@ public class MQSParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\23\64\4\2\t\2\4\3"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3\22\64\4\2\t\2\4\3"+
 		"\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\3\2\3\2\3\2\7\2\22\n\2\f\2\16\2\25"+
 		"\13\2\3\3\3\3\3\3\7\3\32\n\3\f\3\16\3\35\13\3\3\4\3\4\3\4\3\4\3\4\3\4"+
 		"\3\5\3\5\3\5\3\5\3\5\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\5\7\62\n\7\3\7\2"+
 		"\2\b\2\4\6\b\n\f\2\3\3\2\3\5\65\2\23\3\2\2\2\4\26\3\2\2\2\6\36\3\2\2\2"+
-		"\b$\3\2\2\2\n)\3\2\2\2\f\61\3\2\2\2\16\17\5\4\3\2\17\20\7\23\2\2\20\22"+
+		"\b$\3\2\2\2\n)\3\2\2\2\f\61\3\2\2\2\16\17\5\4\3\2\17\20\7\22\2\2\20\22"+
 		"\3\2\2\2\21\16\3\2\2\2\22\25\3\2\2\2\23\21\3\2\2\2\23\24\3\2\2\2\24\3"+
 		"\3\2\2\2\25\23\3\2\2\2\26\33\5\6\4\2\27\32\5\b\5\2\30\32\5\n\6\2\31\27"+
 		"\3\2\2\2\31\30\3\2\2\2\32\35\3\2\2\2\33\31\3\2\2\2\33\34\3\2\2\2\34\5"+

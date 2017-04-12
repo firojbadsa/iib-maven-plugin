@@ -56,7 +56,7 @@ public class Bar extends AbstractMojo {
             String filePath = String.format("%1$s/%2$s.bar", outputDirectory.getCanonicalPath(), artifact);
             String deployAsS = (deployAsSource)? "-deployAsSource":"";
             String trce = (trace)?"-trace":"";
-            String command = String.format("mqsicreatebar -data %1$s -b bar/%2$s.bar -a %2$s %3$s %4$s",outputDirectory.getCanonicalPath(), artifact, deployAsS, trce);
+            String command = String.format("mqsicreatebar -data %1$s -b %1$s/%2$s.bar -a %2$s %3$s %4$s",outputDirectory.getCanonicalPath(), artifact, deployAsS, trce);
             Util.executeCommand(command, getLog());
             project.getArtifact().setFile(new File(filePath));
             getLog().info(" ");
