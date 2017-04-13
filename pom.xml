@@ -37,37 +37,37 @@
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-client</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-http</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-io</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-util</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-api</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-client</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty.websocket</groupId>
             <artifactId>websocket-common</artifactId>
-            <version>9.0.0.v20130308</version>
+            <version>9.0.6.v20130930</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
@@ -131,6 +131,12 @@
          <dependency>
             <groupId>com.ibm.iib</groupId>
             <artifactId>IntegrationAPI</artifactId>
+            <version>10.0.0</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.ibm.iib</groupId>
+            <artifactId>brokerutil</artifactId>
             <version>10.0.0</version>
             <type>jar</type>
         </dependency>
