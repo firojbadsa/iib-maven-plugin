@@ -60,7 +60,7 @@ public class DeployMQ extends AbstractMojo{
         getLog().info("        Integration Bus - DEPLOY MQ Objects         ");
         getLog().info("----------------------------------------------------");
         getLog().info(" ");
-        File mqfolder = new File("resources/mqsc");
+        File mqfolder = new File("resources/mqsc/install");
         File[] mqFiles = mqfolder.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.endsWith("mqsc");
@@ -104,7 +104,7 @@ public class DeployMQ extends AbstractMojo{
         List<MQSCommand> result = p.visit(tree);
         for (MQSCommand mQSCommand : result) {
             try {
-                
+                log.info(mQSCommand.toString());
                 PCFMessage o = mQSCommand.getPCFMessage();
                 PCFMessage[] response = agent.send(o);
                 log.debug(mQSCommand.toString());
