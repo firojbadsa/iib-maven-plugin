@@ -2,6 +2,8 @@
 
 This is a maven plugin for the build cycle of the Libraries and Applications in Integration Toolkit 10
 
+# You can use also the plugin for the toolkit that will set up the project for you https://github.com/jpcasas/iib-toolkit-plugin
+
 ## How to install and use
 ### pre-requirements
 * maven
