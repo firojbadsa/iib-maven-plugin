@@ -9,11 +9,33 @@ This is a maven plugin for the build cycle of the Libraries and Applications in 
 ### instalation
 * Clone the project
 * Install the thrid party jars. there is a script inside the project
-** For windows run "mvnartifacts.cmd "
-** For linux run "./mvnartifacts.sh"
+	* For windows run "mvnartifacts.cmd"
+	* For linux run "./mvnartifacts.sh"
 * Run "mvn install" to install the plugin into the local repository
 
 ### How to use
+#### Structure of the project
+The file structure is very important in order to get the resources for the deployment
+##### For MQ
+* In the folder 'resources -> mqsc' you can create the scripts mqsc for the deployment
+```
+project
+│
+└─resources
+│ │
+│ └─mqsc
+│ │ └──install
+│ │ │  │   01-create-mq-objects.mqsc -> Script MQSC
+│ │ │  │   02-more.mqsc -> Script MQSC
+│ │ └──uninstall
+│ │    │   01-rollback-mq-objects.mqsc -> Script rollback MQSC
+│ │    │   02-more-rollback-stuff.mqsc -> Script MQSC
+│ └─properties -> override properties files
+│   │   DEV.properties 
+│   │   QA.properties
+│   │   PREPRD.properties
+│   │   PRD.properties
+```
 #### example pom.xml for an Application
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -149,4 +171,14 @@ Example of profile configuration for DEV.
 #### After the configuration... the deployment
 * First of all you should build and publish you project into the distribution management system (Nexus)
 * the plugin deploy the artifact that is published in the distribution management system
+* if you have every thing set (svn, nexus, maven) you can perfor the goals
+	* commit all changes
+	* "mvn release:prepare release:perform"
+		* this step will create the tag in the svn and will publish the artifact in the distribution management system
+	* then you can deploy your artifact - project. but before take care of the version of the pom file. the release task changet to the new version change it for the version before in order to deploy the release version not the snapshot.
+	* "mvn iib:override iib:deploy-mq iib:deploy -P DEV"
+		* this will apply the properties file for the profile
+		* deploy the mq objects
+		* deploy the application 
+
 
