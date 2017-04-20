@@ -26,10 +26,10 @@ This is a maven plugin for the build cycle of the Libraries and Applications in 
     <properties>
         <integrationServer>${integrationServer}</integrationServer>
     </properties>
-	  <scm>					 
+    <scm>					 
     	<developerConnection>scm:svn:${svnTag}</developerConnection>
     </scm>
-	 <distributionManagement>
+    <distributionManagement>
         <repository>
             <id>local-repository</id>
             <name>Local Repository</name>
@@ -47,7 +47,6 @@ This is a maven plugin for the build cycle of the Libraries and Applications in 
         </plugins>
         <pluginManagement>
         	<plugins>
-        		<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
         		<plugin>
         			<groupId>org.eclipse.m2e</groupId>
         			<artifactId>lifecycle-mapping</artifactId>
@@ -100,15 +99,15 @@ This is a maven plugin for the build cycle of the Libraries and Applications in 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<scm>					 
-    	<developerConnection>scm:svn:${svnTag}</developerConnection>
-    </scm>
-	 <distributionManagement>
-        <repository>
-            <id>local-repository</id>
-            <name>Local Repository</name>
-            <url>${distributionManagement}</url>
-        </repository>
-    </distributionManagement> 	
+    		<developerConnection>scm:svn:${svnTag}</developerConnection>
+    	</scm>
+	<distributionManagement>
+		<repository>
+		    <id>local-repository</id>
+		    <name>Local Repository</name>
+		    <url>${distributionManagement}</url>
+		</repository>
+    	</distributionManagement> 	
 	<build>
 		<plugins>
 			<plugin>
@@ -123,19 +122,21 @@ This is a maven plugin for the build cycle of the Libraries and Applications in 
 ```
 
 #### Configuration for deployment
-For the deployment of yours artifac you have to add the following properties ( you can add the properties in the `settings.xml` file of your maven installation or in the `pom.xml` file
+To artifact you have to give the information about tha queue manager (for the MQ Scripts) and the integration bus (for the Application).
+This information is in the properties ( you can add the properties in the `settings.xml` file of your maven installation or in the `pom.xml` file)
 
-i create a profile for each enviroment for example for DEV. I have one maven profile like this
+in `settings.xml` i added a profile for each enviroment.
+Example of profile configuration for DEV.
 ```xml
     <profile>
       <id>DEV</id>
       <properties>
-        <mq.host>${mqhost}</mq.host>
-		    <mq.port>${mqport}</mq.port>
-		    <mq.queueManager>${queueManagerName}</mq.queueManager>
-		    <mq.channel>${channel}</mq.channel>
-		    <mq.user>${user if needed}</mq.user>
-		    <mq.password>${password if needed}</mq.password>
+      	<mq.host>${mqhost}</mq.host>
+	<mq.port>${mqport}</mq.port>
+	<mq.queueManager>${queueManagerName}</mq.queueManager>
+	<mq.channel>${channel}</mq.channel>
+	<mq.user>${user if needed}</mq.user>
+	<mq.password>${password if needed}</mq.password>
 		
         <iib.host>${IntegrationBusIPNode}</iib.host>
         <iib.port>${Port of webconsole}</iib.port>
