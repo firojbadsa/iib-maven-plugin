@@ -53,10 +53,10 @@ public class Bar extends AbstractMojo {
             getLog().info("----------------------------------------------------");
             getLog().info(" ");
             String artifact = project.getArtifactId();
-            String filePath = String.format("%1$s/%2$s.bar", outputDirectory.getCanonicalPath(), artifact);
+            String filePath = String.format("%1$s/%2$s.bar", outputDirectory.getCanonicalFile().getParentFile().getCanonicalPath(), artifact);
             String deployAsS = (deployAsSource)? "-deployAsSource":"";
             String trce = (trace)?"-trace":"";
-            String command = String.format("mqsicreatebar -data %1$s -b %1$s/%2$s.bar -a %2$s %3$s %4$s",outputDirectory.getCanonicalPath(), artifact, deployAsS, trce);
+            String command = String.format("mqsicreatebar -data %1$s -b %5$s/%2$s.bar -a %2$s %3$s %4$s",outputDirectory.getCanonicalPath(), artifact, deployAsS, trce, outputDirectory.getCanonicalFile().getParentFile().getCanonicalPath());
             Util.executeCommand(command, getLog());
             project.getArtifact().setFile(new File(filePath));
             getLog().info(" ");

@@ -5,6 +5,7 @@
  */
 package com.iib.plugins.tools;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.maven.plugin.logging.Log;
@@ -35,9 +37,13 @@ public class FileTools {
         log.info(String.format("Coping %s", sourceLocation.getName()));
         if (!outputdir.equals(sourceLocation)) {
             if (sourceLocation.isDirectory()) {
-                copyDirectory(sourceLocation, targetLocation, log, outputdir);
+                if (filterDir(sourceLocation)) {
+                    copyDirectory(sourceLocation, targetLocation, log, outputdir);
+                }
             } else {
-                copyFile(sourceLocation, targetLocation);
+                if (filterFile(sourceLocation)) {
+                    copyFile(sourceLocation, targetLocation);
+                }
             }
         }
     }
@@ -108,6 +114,21 @@ public class FileTools {
 
     public static String readFile(File mqFile) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private static boolean filterDir(File sourceLocation) {
+        List filtre=Arrays.asList(new String[]{".svn","target", "resources"});
+        return !filtre.contains(sourceLocation.getName());
+    }
+
+    private static boolean filterFile(File sourceLocation) {
+        String[] filtre = new String[]{".bar", ".BAR"};
+        boolean flag = false;
+        for (int i = 0; i < filtre.length; i++) {
+            String string = filtre[i];
+            flag |= sourceLocation.getName().endsWith(string);
+        }
+        return !flag;
     }
 
 }
