@@ -18,20 +18,12 @@ import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
-import com.iib.plugins.tools.*;
-import com.mq.commands.MQSCommand;
-import com.mq.parser.MQSCVisitorImpl;
-import com.mq.parser.MQSLexer;
-import com.mq.parser.MQSParser;
-import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.antlr.v4.runtime.ANTLRInputStream;
-import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.atn.PredictionMode;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugins.annotations.Parameter;
 
@@ -71,7 +63,7 @@ public class DeployMQ extends AbstractMojo{
             for (File mqFile : mqFiles) {
                 try {
                     getLog().info("RUN SCRIPT "+mqFile.getName());
-                    executeScript(new FileInputStream(mqFile), getLog());
+                    executeScript(mqFile, getLog());
                     getLog().info("END SCRIPT "+mqFile.getName());
                 } catch (IOException ex) {
                     getLog().error(ex);
@@ -85,15 +77,8 @@ public class DeployMQ extends AbstractMojo{
         
     }
 
-    private void executeScript(FileInputStream script, Log log) throws IOException, MQException, MQDataException {
-        ANTLRInputStream input = new ANTLRInputStream(script);
-        MQSLexer lexer = new MQSLexer(input);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        MQSParser parser = new MQSParser(tokens);
-        parser.getInterpreter().setPredictionMode(PredictionMode.LL);
-
-        ParseTree tree = parser.objectCommand();
-        MQSCVisitorImpl p = new MQSCVisitorImpl();
+    private void executeScript(File script, Log log) throws IOException, MQException, MQDataException {
+       
 
         MQEnvironment.hostname = host;
         MQEnvironment.port = port;
@@ -101,16 +86,16 @@ public class DeployMQ extends AbstractMojo{
         MQQueueManager qm = new MQQueueManager(queueManager);
         PCFMessageAgent agent = new PCFMessageAgent(qm);
 
-        List<MQSCommand> result = p.visit(tree);
-        for (MQSCommand mQSCommand : result) {
+        List<String> commands = readFile(script);
+        for (String mQSCommand : commands) {
             try {
-                log.info(mQSCommand.toString());
-                PCFMessage o = mQSCommand.getPCFMessage();
-                PCFMessage[] response = agent.send(o);
+                log.info("COMMAND -- "+mQSCommand);
+                PCFMessage runmqscCommand = getPCFMessageFromMQSC(mQSCommand);
+                PCFMessage[] response = agent.send(runmqscCommand);
                 log.debug(mQSCommand.toString());
                 for (PCFMessage pCFMessage : response) {
                     
-                    log.debug(pCFMessage.toString());
+                    log.debug(pCFMessage.getStringParameterValue(MQConstants.MQCACF_ESCAPE_TEXT));
                     
                 }
             } catch (MQDataException ex) {
@@ -119,6 +104,22 @@ public class DeployMQ extends AbstractMojo{
             }
 
         }
+    }
+
+    private List<String> readFile(File script) throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new FileReader(script));
+        ArrayList<String> list  = new ArrayList<String>();
+        String line = null;
+        while((line = br.readLine())!=null) list.add(line);
+        return list;
+        
+    }
+
+    private PCFMessage getPCFMessageFromMQSC(String mQSCommand) {
+        PCFMessage pcf = new PCFMessage(MQConstants.MQCMD_ESCAPE);
+        pcf.addParameter(MQConstants.MQIACF_ESCAPE_TYPE, MQConstants.MQET_MQSC);
+        pcf.addParameter(MQConstants.MQCACF_ESCAPE_TEXT, mQSCommand);
+        return pcf;
     }
     
 }

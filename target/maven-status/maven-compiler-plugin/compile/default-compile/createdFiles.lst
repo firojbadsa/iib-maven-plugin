@@ -1,0 +1,13 @@
+com\iib\plugins\Override.class
+com\iib\plugins\PrepareWorkspace.class
+com\iib\plugins\DeployMQ.class
+com\iib\plugins\tools\Util.class
+com\mq\commands\MQSCToPCF.class
+com\iib\plugins\CompileWorkspace.class
+com\iib\plugins\Bar.class
+com\iib\plugins\tools\FileTools.class
+com\iib\plugins\Deploy.class
+com\mq\commands\MQSCommand.class
+com\iib\plugins\ZipProject.class
+HelpMojo.class
+com\iib\plugins\DeployMQ$1.class
